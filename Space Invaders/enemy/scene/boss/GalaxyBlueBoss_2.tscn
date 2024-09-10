@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fire_effect/scene/TurboReactors.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemy/script/GalaxyBlueBoss.gd" type="Script" id=2]
+[ext_resource path="res://enemy/sprite/boss_1.png" type="Texture" id=3]
+[ext_resource path="res://bullet/scene/Bullet.tscn" type="PackedScene" id=4]
+
+[node name="GalaxyBlueBoss" type="Area2D"]
+rotation = -1.5708
+scale = Vector2( 0.6, 0.6 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+BulletScene = ExtResource( 4 )
+_animation_end_time = 0.75
+_life = 30
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 3.33334, -86.6667, -3.33333, -85, -25, -36.6667, -21.6667, -11.6667, -56.6667, 18.3333, -58.3333, 30, -86.6667, 46.6667, -85, 58.3333, -60, 60, -58.3333, 71.6667, -46.6667, 68.3333, -40, 58.3333, -18.3333, 58.3333, -31.6667, 70, -31.6667, 75, -13.3333, 75, -13.3333, 85, -6.66667, 85, -3.33334, 75, 5, 76.6667, 5, 86.6667, 15, 81.6667, 13.3333, 78.3333, 30, 76.6667, 30, 68.3333, 18.3333, 60, 40, 58.3333, 45, 71.6667, 53.3333, 71.6667, 58.3333, 60, 88.3333, 63.3333, 85, 48.3333, 60, 35, 55, 13.3333, 41.6667, 6.66667, 21.6667, -5, 25, -40 )
+
+[node name="TurboReactor" type="Node2D" parent="."]
+
+[node name="TurboReactor" parent="TurboReactor" instance=ExtResource( 1 )]
+position = Vector2( -7.18412, 99.7571 )
+rotation = -1.5708
+scale = Vector2( 0.277, 0.199 )
+frame = 4
+
+[node name="TurboReactor2" parent="TurboReactor" instance=ExtResource( 1 )]
+position = Vector2( 5.98676, 99.7571 )
+rotation = -1.5708
+scale = Vector2( 0.277, 0.199 )
+frame = 27
+
+[node name="MoveAnimation" type="AnimationPlayer" parent="."]
+
+[node name="BulletPosition" type="Position2D" parent="."]
+position = Vector2( 3.57628e-06, -86.6667 )
+
+[node name="BulletLoader" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="BulletTouchEffect" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="area_entered" from="." to="." method="_on_GalaxyBlueBoss_area_entered"]
+[connection signal="animation_finished" from="MoveAnimation" to="." method="_on_MoveAnimation_animation_finished"]
+[connection signal="timeout" from="BulletLoader" to="." method="_on_BulletLoader_timeout"]
+[connection signal="timeout" from="BulletTouchEffect" to="." method="_on_BulletTouchEffect_timeout"]
